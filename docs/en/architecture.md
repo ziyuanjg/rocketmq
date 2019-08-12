@@ -1,7 +1,7 @@
 # Architecture design
 
 ## Technology Architecture
-![](image/rocketmq_architecture_1.png)
+![](docs/cn/image/rocketmq_architecture_1.png)
 
 The RocketMQ architecture is divided into four parts, as shown in the figure above:
 
@@ -19,12 +19,12 @@ The RocketMQ architecture is divided into four parts, as shown in the figure abo
 4. HA Service：Highly available service that provides data synchronization between Master Broker and Slave Broker.
 5. Index Service：The message delivered to the Broker is indexed according to a specific Message key to provide a quick query of the message.
 
-![](image/rocketmq_architecture_2.png)
+![](docs/cn/image/rocketmq_architecture_2.png)
 
 ## Deployment architecture
 
 
-![](image/rocketmq_architecture_3.png)
+![](docs/cn/image/rocketmq_architecture_3.png)
 
 
 ### RocketMQ Network deployment features
