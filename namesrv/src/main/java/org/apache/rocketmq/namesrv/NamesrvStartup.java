@@ -32,9 +32,9 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.rocketmq.common.MQVersion;
 import org.apache.rocketmq.common.MixAll;
 import org.apache.rocketmq.common.constant.LoggerName;
+import org.apache.rocketmq.common.namesrv.NamesrvConfig;
 import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.logging.InternalLoggerFactory;
-import org.apache.rocketmq.common.namesrv.NamesrvConfig;
 import org.apache.rocketmq.remoting.netty.NettyServerConfig;
 import org.apache.rocketmq.remoting.protocol.RemotingCommand;
 import org.apache.rocketmq.srvutil.ServerUtil;
@@ -56,7 +56,8 @@ public class NamesrvStartup {
         try {
             NamesrvController controller = createNamesrvController(args);
             start(controller);
-            String tip = "The Name Server boot success. serializeType=" + RemotingCommand.getSerializeTypeConfigInThisServer();
+            String tip = "The Name Server boot success. serializeType=" + RemotingCommand
+                    .getSerializeTypeConfigInThisServer();
             log.info(tip);
             System.out.printf("%s%n", tip);
             return controller;
@@ -68,11 +69,16 @@ public class NamesrvStartup {
         return null;
     }
 
+    /**
+     * 构建分发处理器
+     */
     public static NamesrvController createNamesrvController(String[] args) throws IOException, JoranException {
         System.setProperty(RemotingCommand.REMOTING_VERSION_KEY, Integer.toString(MQVersion.CURRENT_VERSION));
         //PackageConflictDetect.detectFastjson();
 
+        // 通用解析器，负责解析帮助指令及namesrvAddr
         Options options = ServerUtil.buildCommandlineOptions(new Options());
+        // 解析namesrv支持的参数：-c，-p
         commandLine = ServerUtil.parseCmdLine("mqnamesrv", args, buildCommandlineOptions(options), new PosixParser());
         if (null == commandLine) {
             System.exit(-1);
@@ -82,6 +88,8 @@ public class NamesrvStartup {
         final NamesrvConfig namesrvConfig = new NamesrvConfig();
         final NettyServerConfig nettyServerConfig = new NettyServerConfig();
         nettyServerConfig.setListenPort(9876);
+
+        // 读取自定义配置文件
         if (commandLine.hasOption('c')) {
             String file = commandLine.getOptionValue('c');
             if (file != null) {
@@ -98,6 +106,7 @@ public class NamesrvStartup {
             }
         }
 
+        // 打印配置信息
         if (commandLine.hasOption('p')) {
             InternalLogger console = InternalLoggerFactory.getLogger(LoggerName.NAMESRV_CONSOLE_NAME);
             MixAll.printObjectProperties(console, namesrvConfig);
@@ -108,7 +117,9 @@ public class NamesrvStartup {
         MixAll.properties2Object(ServerUtil.commandLine2Properties(commandLine), namesrvConfig);
 
         if (null == namesrvConfig.getRocketmqHome()) {
-            System.out.printf("Please set the %s variable in your environment to match the location of the RocketMQ installation%n", MixAll.ROCKETMQ_HOME_ENV);
+            System.out
+                    .printf("Please set the %s variable in your environment to match the location of the RocketMQ installation%n",
+                            MixAll.ROCKETMQ_HOME_ENV);
             System.exit(-2);
         }
 
@@ -137,6 +148,7 @@ public class NamesrvStartup {
             throw new IllegalArgumentException("NamesrvController is null");
         }
 
+        // 加载各个配置文件
         boolean initResult = controller.initialize();
         if (!initResult) {
             controller.shutdown();

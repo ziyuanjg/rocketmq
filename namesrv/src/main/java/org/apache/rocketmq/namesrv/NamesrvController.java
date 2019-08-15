@@ -82,8 +82,10 @@ public class NamesrvController {
         this.remotingExecutor =
             Executors.newFixedThreadPool(nettyServerConfig.getServerWorkerThreads(), new ThreadFactoryImpl("RemotingExecutorThread_"));
 
+        // 注册请求处理器
         this.registerProcessor();
 
+        // 定时扫描心跳超时的broker，并将其剔除
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 
             @Override
@@ -103,6 +105,7 @@ public class NamesrvController {
         if (TlsSystemConfig.tlsMode != TlsMode.DISABLED) {
             // Register a listener to reload SslContext
             try {
+                // 监控配置文件变化
                 fileWatchService = new FileWatchService(
                     new String[] {
                         TlsSystemConfig.tlsServerCertPath,
@@ -141,6 +144,7 @@ public class NamesrvController {
         return true;
     }
 
+    // 注册请求处理器
     private void registerProcessor() {
         if (namesrvConfig.isClusterTest()) {
 
