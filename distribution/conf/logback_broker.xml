@@ -17,6 +17,8 @@
   -->
 
 <configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
     <appender name="DefaultAppender"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.home}/logs/rocketmqlogs/broker_default.log</file>
@@ -268,70 +270,84 @@
     <logger name="RocketmqBroker" additivity="false">
         <level value="INFO"/>
         <appender-ref ref="RocketmqBrokerAppender"/>
+        <appender-ref ref="CONSOLE"/>
     </logger>
 
     <logger name="RocketmqProtection" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqProtectionAppender"/>
     </logger>
 
     <logger name="RocketmqWaterMark" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqWaterMarkAppender"/>
     </logger>
 
     <logger name="RocketmqCommon" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqBrokerAppender"/>
     </logger>
 
     <logger name="RocketmqStore" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqStoreAppender"/>
     </logger>
 
     <logger name="RocketmqStoreError" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqStoreErrorAppender"/>
     </logger>
 
     <logger name="RocketmqTransaction" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqTransactionAppender"/>
     </logger>
 
     <logger name="RocketmqRebalanceLock" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqRebalanceLockAppender"/>
     </logger>
 
     <logger name="RocketmqRemoting" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqRemotingAppender"/>
     </logger>
 
     <logger name="RocketmqStats" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqStatsAppender"/>
     </logger>
 
     <logger name="RocketmqCommercial" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqCommercialAppender"/>
     </logger>
 
     <logger name="RocketmqFilter" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="RocketmqFilterAppender"/>
     </logger>
 
     <logger name="RocketmqConsole" additivity="false">
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="STDOUT"/>
     </logger>
 
     <root>
         <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DefaultAppender"/>
     </root>
 </configuration>

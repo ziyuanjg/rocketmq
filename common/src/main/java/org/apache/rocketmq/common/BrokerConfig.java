@@ -295,6 +295,9 @@ public class BrokerConfig {
     }
 
     public String getRocketmqHome() {
+        if(rocketmqHome == null){
+            rocketmqHome = "/Users/apple/Documents/apache-rocketmq";
+        }
         return rocketmqHome;
     }
 
