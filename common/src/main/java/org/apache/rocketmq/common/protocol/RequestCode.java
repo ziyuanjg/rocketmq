@@ -21,11 +21,25 @@ public class RequestCode {
 
     public static final int SEND_MESSAGE = 10;
 
+    /**
+     * 拉取消息
+     */
     public static final int PULL_MESSAGE = 11;
 
+    /**
+     * 查询消息
+     */
     public static final int QUERY_MESSAGE = 12;
     public static final int QUERY_BROKER_OFFSET = 13;
+
+    /**
+     * 查询消费偏移量
+     */
     public static final int QUERY_CONSUMER_OFFSET = 14;
+
+    /**
+     * 更新消费偏移量
+     */
     public static final int UPDATE_CONSUMER_OFFSET = 15;
     public static final int UPDATE_AND_CREATE_TOPIC = 17;
     public static final int GET_ALL_TOPIC_CONFIG = 21;
@@ -46,15 +60,31 @@ public class RequestCode {
 
     public static final int GET_EARLIEST_MSG_STORETIME = 32;
 
+    /**
+     * 根据msgId查询消息
+     */
     public static final int VIEW_MESSAGE_BY_ID = 33;
 
+    /**
+     * 心跳检测
+     */
     public static final int HEART_BEAT = 34;
 
+    /**
+     * 注销客户端
+     */
     public static final int UNREGISTER_CLIENT = 35;
 
+    /**
+     * 消费失败的消息，申请重试
+     */
     public static final int CONSUMER_SEND_MSG_BACK = 36;
 
     public static final int END_TRANSACTION = 37;
+
+    /**
+     * 查询消费者组成员ip列表
+     */
     public static final int GET_CONSUMER_LIST_BY_GROUP = 38;
 
     public static final int CHECK_TRANSACTION_STATE = 39;
@@ -68,6 +98,9 @@ public class RequestCode {
 
     public static final int GET_ALL_DELAY_OFFSET = 45;
 
+    /**
+     * 检查客户端配置
+     */
     public static final int CHECK_CLIENT_CONFIG = 46;
 
     public static final int PUT_KV_CONFIG = 100;

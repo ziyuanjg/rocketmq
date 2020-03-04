@@ -36,6 +36,9 @@ public class SubscriptionGroupConfig {
 
     private long whichBrokerWhenConsumeSlowly = 1;
 
+    /**
+     * 订阅关系有变化时，是否主动通知各节点
+     */
     private boolean notifyConsumerIdsChangedEnable = true;
 
     public String getGroupName() {
