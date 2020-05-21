@@ -163,6 +163,7 @@ public class DefaultMessageStore implements MessageStore {
     }
 
     /**
+     * 初始化存储引擎
      * @throws IOException
      */
     public boolean load() {
@@ -302,12 +303,20 @@ public class DefaultMessageStore implements MessageStore {
         }
     }
 
+    /**
+     * 存消息
+     * @param msg Message instance to store
+     * @return
+     */
     public PutMessageResult putMessage(MessageExtBrokerInner msg) {
         if (this.shutdown) {
             log.warn("message store has shutdown, so putMessage is forbidden");
             return new PutMessageResult(PutMessageStatus.SERVICE_NOT_AVAILABLE, null);
         }
 
+        /**
+         * 从节点禁止存消息
+         */
         if (BrokerRole.SLAVE == this.messageStoreConfig.getBrokerRole()) {
             long value = this.printTimes.getAndIncrement();
             if ((value % 50000) == 0) {
@@ -317,6 +326,9 @@ public class DefaultMessageStore implements MessageStore {
             return new PutMessageResult(PutMessageStatus.SERVICE_NOT_AVAILABLE, null);
         }
 
+        /**
+         * 检查写权限是否开启
+         */
         if (!this.runningFlags.isWriteable()) {
             long value = this.printTimes.getAndIncrement();
             if ((value % 50000) == 0) {
@@ -328,16 +340,25 @@ public class DefaultMessageStore implements MessageStore {
             this.printTimes.set(0);
         }
 
+        /**
+         * 消息非法
+         */
         if (msg.getTopic().length() > Byte.MAX_VALUE) {
             log.warn("putMessage message topic length too long " + msg.getTopic().length());
             return new PutMessageResult(PutMessageStatus.MESSAGE_ILLEGAL, null);
         }
 
+        /**
+         * 参数过长
+         */
         if (msg.getPropertiesString() != null && msg.getPropertiesString().length() > Short.MAX_VALUE) {
             log.warn("putMessage message properties length too long " + msg.getPropertiesString().length());
             return new PutMessageResult(PutMessageStatus.PROPERTIES_SIZE_EXCEEDED, null);
         }
 
+        /**
+         * 检查pageCache是否处于繁忙状态，如果一次消息追加过程超过阈值（默认1s）则认定繁忙
+         */
         if (this.isOSPageCacheBusy()) {
             return new PutMessageResult(PutMessageStatus.OS_PAGECACHE_BUSY, null);
         }

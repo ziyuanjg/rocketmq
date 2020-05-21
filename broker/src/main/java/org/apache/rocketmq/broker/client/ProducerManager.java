@@ -64,6 +64,9 @@ public class ProducerManager {
         return newGroupChannelTable;
     }
 
+    /**
+     * 扫描长时间不活跃通道，将其关闭
+     */
     public void scanNotActiveChannel() {
         try {
             if (this.groupChannelLock.tryLock(LOCK_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)) {
